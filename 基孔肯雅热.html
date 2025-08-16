@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>广东省基孔肯雅热疫情数据统计（2025.08.04-08.10）</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    
+    <!-- 配置Tailwind自定义颜色 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#E63946',
+                        secondary: '#FFC300',
+                        tertiary: '#1D3557',
+                        light: '#F1FAEE',
+                        accent: '#457B9D'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .card-shadow {
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            }
+            .stat-card {
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+            .stat-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+    <!-- 顶部导航栏 -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fa fa-heartbeat text-primary text-2xl"></i>
+                <h1 class="text-xl md:text-2xl font-bold text-tertiary">广东省基孔肯雅热疫情监测</h1>
+            </div>
+            <div class="text-sm text-gray-500">
+                <span>数据更新时间: 2025-08-11</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <!-- 标题和风险等级 -->
+        <div class="mb-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
+                <div>
+                    <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-tertiary">基孔肯雅热疫情周报</h2>
+                    <p class="text-gray-500 mt-1">2025年08月04日 - 08月10日</p>
+                </div>
+                <div class="mt-4 md:mt-0 flex items-center">
+                    <div class="bg-secondary text-white px-4 py-2 rounded-l-lg font-medium">
+                        风险等级: 中
+                    </div>
+                    <div class="bg-white border border-gray-200 px-4 py-2 rounded-r-lg">
+                        <i class="fa fa-exclamation-triangle text-secondary mr-1"></i>
+                        <span>需加强防范</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 总体数据卡片 -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white rounded-xl p-6 card-shadow stat-card">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-500 text-sm">本周新增病例</p>
+                            <h3 class="text-3xl font-bold text-primary mt-1">1,387</h3>
+                            <p class="text-green-500 text-sm mt-2 flex items-center">
+                                <i class="fa fa-arrow-down mr-1"></i>
+                                <span>较上周下降12.3%</span>
+                            </p>
+                        </div>
+                        <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                            <i class="fa fa-user-md text-primary text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl p-6 card-shadow stat-card">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-500 text-sm">涉及城市</p>
+                            <h3 class="text-3xl font-bold text-accent mt-1">17</h3>
+                            <p class="text-red-500 text-sm mt-2 flex items-center">
+                                <i class="fa fa-arrow-up mr-1"></i>
+                                <span>较上周增加2个</span>
+                            </p>
+                        </div>
+                        <div class="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center">
+                            <i class="fa fa-map-marker text-accent text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl p-6 card-shadow stat-card">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-500 text-sm">病例最多城市</p>
+                            <h3 class="text-3xl font-bold text-tertiary mt-1">佛山</h3>
+                            <p class="text-gray-500 text-sm mt-2">
+                                <span>占比87.4%</span>
+                            </p>
+                        </div>
+                        <div class="w-12 h-12 rounded-full bg-tertiary/10 flex items-center justify-center">
+                            <i class="fa fa-bar-chart text-tertiary text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 图表区域 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
+            <!-- 每日新增趋势图 -->
+            <div class="bg-white rounded-xl p-6 card-shadow">
+                <h3 class="text-lg font-semibold mb-4 flex items-center">
+                    <i class="fa fa-line-chart text-primary mr-2"></i>
+                    每日新增病例趋势
+                </h3>
+                <div class="h-80">
+                    <canvas id="dailyTrendChart"></canvas>
+                </div>
+            </div>
+            
+            <!-- 城市分布饼图 -->
+            <div class="bg-white rounded-xl p-6 card-shadow">
+                <h3 class="text-lg font-semibold mb-4 flex items-center">
+                    <i class="fa fa-pie-chart text-accent mr-2"></i>
+                    病例城市分布
+                </h3>
+                <div class="h-80">
+                    <canvas id="cityDistributionChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 症状和预防措施 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- 症状卡片 -->
+            <div class="bg-white rounded-xl p-6 card-shadow">
+                <h3 class="text-lg font-semibold mb-4 flex items-center text-tertiary">
+                    <i class="fa fa-stethoscope mr-2"></i>
+                    主要症状表现
+                </h3>
+                <ul class="space-y-3">
+                    <li class="flex items-start">
+                        <i class="fa fa-check-circle text-primary mt-1 mr-3"></i>
+                        <span>发热（多为高热，可达38℃以上）</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fa fa-check-circle text-primary mt-1 mr-3"></i>
+                        <span>关节剧痛（常见手、腕、踝等关节）</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fa fa-check-circle text-primary mt-1 mr-3"></i>
+                        <span>皮疹（多为斑丘疹，可分布躯干、四肢）</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fa fa-check-circle text-primary mt-1 mr-3"></i>
+                        <span>头痛、肌肉酸痛</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fa fa-check-circle text-primary mt-1 mr-3"></i>
+                        <span>部分患者恢复期关节仍有隐痛</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- 预防措施卡片 -->
+            <div class="bg-white rounded-xl p-6 card-shadow">
+                <h3 class="text-lg font-semibold mb-4 flex items-center text-accent">
+                    <i class="fa fa-shield mr-2"></i>
+                    预防措施建议
+                </h3>
+                <ul class="space-y-3">
+                    <li class="flex items-start">
+                        <i class="fa fa-check-circle text-accent mt-1 mr-3"></i>
+                        <span>防蚊灭蚊（清理积水，使用蚊帐、驱蚊剂）</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fa fa-check-circle text-accent mt-1 mr-3"></i>
+                        <span>避免蚊虫叮咬（穿长袖长裤，在蚊虫活跃时段减少外出）</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fa fa-check-circle text-accent mt-1 mr-3"></i>
+                        <span>出现症状及时就医（尤其是去过流行地区人群）</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fa fa-check-circle text-accent mt-1 mr-3"></i>
+                        <span>流行地区做好环境消杀</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fa fa-check-circle text-accent mt-1 mr-3"></i>
+                        <span>关注疾控部门疫情通报，了解最新情况</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- 数据来源 -->
+        <div class="mt-8 text-sm text-gray-500 italic">
+            数据来源：广东省疾病预防控制中心网站、各地市疾控中心发布信息
+        </div>
+    </main>
+
+    <footer class="bg-tertiary text-white mt-12 py-6">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <p>© 2025 广东省疾病预防控制中心 版权所有</p>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="#" class="hover:text-secondary transition-colors"><i class="fa fa-weibo"></i> 官方微博</a>
+                    <a href="#" class="hover:text-secondary transition-colors"><i class="fa fa-weixin"></i> 官方微信</a>
+                    <a href="#" class="hover:text-secondary transition-colors"><i class="fa fa-phone"></i> 咨询热线</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 初始化图表
+        document.addEventListener('DOMContentLoaded', function() {
+            // 每日新增趋势图
+            const dailyCtx = document.getElementById('dailyTrendChart').getContext('2d');
+            const dailyChart = new Chart(dailyCtx, {
+                type: 'line',
+                data: {
+                    labels: ['8月4日', '8月5日', '8月6日', '8月7日', '8月8日', '8月9日', '8月10日'],
+                    datasets: [{
+                        label: '广东省每日新增病例数',
+                        data: [215, 202, 195, 188, 176, 158, 153],
+                        backgroundColor: 'rgba(230, 57, 70, 0.1)',
+                        borderColor: 'rgba(230, 57, 70, 1)',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        fill: true,
+                        pointBackgroundColor: 'rgba(230, 57, 70, 1)',
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            backgroundColor: 'rgba(29, 53, 87, 0.9)',
+                            padding: 12,
+                            titleFont: {
+                                size: 14
+                            },
+                            bodyFont: {
+                                size: 13
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            },
+                            ticks: {
+                                precision: 0
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 1500,
+                        easing: 'easeOutQuart'
+                    }
+                }
+            });
+
+            // 城市分布饼图
+            const cityCtx = document.getElementById('cityDistributionChart').getContext('2d');
+            const cityChart = new Chart(cityCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['佛山', '广州', '湛江', '清远', '深圳', '珠海', '其他城市'],
+                    datasets: [{
+                        data: [1212, 103, 39, 6, 5, 5, 17],
+                        backgroundColor: [
+                            'rgba(230, 57, 70, 0.8)',
+                            'rgba(255, 195, 0, 0.8)',
+                            'rgba(69, 123, 157, 0.8)',
+                            'rgba(29, 53, 87, 0.8)',
+                            'rgba(72, 187, 120, 0.8)',
+                            'rgba(160, 32, 32, 0.8)',
+                            'rgba(150, 150, 150, 0.8)'
+                        ],
+                        borderColor: 'white',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(29, 53, 87, 0.9)',
+                            padding: 12,
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    return `${label}: ${value}例 (${percentage}%)`;
+                                }
+                            }
+                        }
+                    },
+                    animation: {
+                        animateRotate: true,
+                        animateScale: true,
+                        duration: 1500,
+                        easing: 'easeOutQuart'
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
